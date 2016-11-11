@@ -6,11 +6,15 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -70,7 +74,16 @@ public class MainActivity extends AppCompatActivity {
                 connection.setReadTimeout(20000);
                 connection.setConnectTimeout(25000);
                 connection.getRequestMethod();
-                
+                connection.setDoInput(true);
+                connection.connect();
+
+                int response = connection.getResponseCode();
+                Log.d("Checking response code", "The response is: " + response);
+
+                inputstream=connection.getInputStream();
+                String contentAsString = readIt(inputstream, length);
+                return contentAsString;
+
 
 
             }finally {
@@ -79,7 +92,16 @@ public class MainActivity extends AppCompatActivity {
                     inputstream.close();
                 }
             }
-            return "";
+
+
+        }
+
+        private String readIt(InputStream inputstream, int length)throws IOException,UnsupportedEncodingException {
+            Reader reader = null;
+            reader = new InputStreamReader(inputstream,"UTF-8");
+            char[] buffer= new char[length];
+            reader.read(buffer);
+            return new String(buffer);
 
         }
     }
