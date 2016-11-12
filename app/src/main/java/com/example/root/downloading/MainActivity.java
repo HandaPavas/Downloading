@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.root.downloading.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         downloadbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // String Url = "https://iiitd.ac.in/about";
+                // String Url = "https://iiitd.ac.in/about";
                 ConnectivityManager connectivityManager= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
 
@@ -58,10 +60,21 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    public void onSaveInstanceState (Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("Title", TitleToString);
+        savedInstanceState.putString("Content", ContentToString);
+
+    }
+    @Override
+    public void onRestoreInstanceState (Bundle restoreInstanceState){
+        super.onRestoreInstanceState(restoreInstanceState);
+        TitleToString = restoreInstanceState.getString("Title");
+        ContentToString=restoreInstanceState.getString("Content");
+        title.setText(TitleToString);
+        content.setText(ContentToString);
+
     }
 
     private class JsoupAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -76,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Document = Jsoup.connect(Url).get();
                 TitleToString = Document.title();
-                ContentToString = Document.text();
+                Elements para=Document.select("p");
+                ContentToString = para.text();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -88,5 +102,7 @@ public class MainActivity extends AppCompatActivity {
             title.setText(TitleToString);
             content.setText(ContentToString);
         }
+
     }
+
 }
