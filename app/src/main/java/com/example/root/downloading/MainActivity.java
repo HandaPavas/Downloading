@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 Document = Jsoup.connect(Url).get();
                 TitleToString = Document.title();
-                Elements para=Document.select("p");
-                ContentToString = para.text();
+                Elements ptags=Document.select("p");
+                ContentToString = ptags.text();
             } catch (IOException e) {
                 e.printStackTrace();
             }
