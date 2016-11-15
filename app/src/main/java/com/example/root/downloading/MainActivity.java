@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
 
                     TitleToString="Connection Failed!!!";
-                   ContentToString="";
+                    ContentToString="";
                     title.setText(TitleToString);
                     content.setText(ContentToString);
                 }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         ContentToString=restoreInstanceState.getString("Content");
         title.setText(TitleToString);
         content.setText(ContentToString);
-        
+
 
     }
 
@@ -95,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
                 TitleToString = Document.title();
                 Elements ptags=Document.select("p");
                 ContentToString = ptags.text();
-               // Log.i("Content Of IIITD", ContentToString);
-               System.out.print(ContentToString);
+                Log.i("Content Of IIITD", ContentToString);
+                System.out.print(ContentToString);
             } catch (IOException e) {
 
                 TitleToString="Connection Failed!!!";
